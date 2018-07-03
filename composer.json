@@ -1,0 +1,20 @@
+{
+    "name": "greeflas/itea-php7-migrator",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "greeflas",
+            "email": "vldmr.kuprienko@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "phpdocumentor/reflection-docblock": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": ""
+        }
+    }
+}
