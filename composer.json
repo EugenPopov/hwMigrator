@@ -1,20 +1,21 @@
 {
-    "name": "greeflas/itea-php7-migrator",
+    "name": "eugene/itea-php7-migrator",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "greeflas",
-            "email": "vldmr.kuprienko@gmail.com"
+            "name": "Popov Eugene",
+            "email": "zhenya1995q@gmail.com"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "phpdocumentor/reflection-docblock": "^4.3"
+        "phpdocumentor/reflection-docblock": "^4.3",
+        "php" : "^7.2"
     },
     "autoload": {
         "psr-4": {
-            "App\\": ""
+            "App\\": "src"
         }
     }
 }

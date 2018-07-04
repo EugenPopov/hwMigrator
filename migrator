@@ -3,6 +3,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+
 use App\Test;
 
 $reflector = new \ReflectionClass(Test::class);
@@ -12,22 +13,55 @@ $classToMigrate = \file_get_contents($classToMigrateFile);
 $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
 
 foreach ($methods as $method) {
+
+    ///////RETURN TYPE HINTS//////
+    $matches = [];
+
+    $docBlock = $factory->create($method->getDocComment());
+    $returns = $docBlock->getTagsByName('return');
+
+    $pattern = '/' . $method->getName() . '\(.+\)' . '/';
+    echo PHP_EOL;
+    \preg_match($pattern, $classToMigrate, $matches);
+    $methodSignature = $matches[0];
+    $oldMethodSignature = $methodSignature;
+
+    foreach ($returns as $return) {
+        $type = (string) $return->getType();
+        $types = \explode('|', $type);
+        echo $typesNum = count($types);
+
+        // TODO: handle "mixed" type
+
+        if ($typesNum > 2) {
+            continue;
+        } elseif ($typesNum === 2 && in_array('null', $types)) {
+            $type = '?' . ($types[0] === 'null' ? $types[1] : $types[0]);
+        }
+
+        echo $methodSignature = $methodSignature.' :'.$type;
+    }
+
+    $classToMigrate = str_replace($oldMethodSignature, $methodSignature, $classToMigrate);
+
+    //////////////ARGUMENT TYPE///////////
+
     $matches = [];
 
     $docBlock = $factory->create($method->getDocComment());
     $params = $docBlock->getTagsByName('param');
 
-    $pattern = '/' . $method->getName() . '\(.+\)' . '/';
+    echo $pattern = '/' . $method->getName() . '\(.+\)' . '/';
     \preg_match($pattern, $classToMigrate, $matches);
     $methodSignature = $matches[0];
-    var_dump($pattern);
     $oldMethodSignature = $methodSignature;
 
     foreach ($params as $param) {
         $type = (string) $param->getType();
         $types = \explode('|', $type);
         $paramName = '$' . $param->getVariableName();
-        $typesNum = count($types);
+        echo PHP_EOL;
+        echo $typesNum = count($types);
 
         // TODO: handle "mixed" type
 
