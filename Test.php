@@ -16,7 +16,7 @@ class Test
      *
      * @return void|null
      */
-    public function testMethod(float $param1, string $param2, ?int $param3) :?void
+    public function testMethod($param1, $param2, $param3)
     {
 
     }
@@ -25,9 +25,9 @@ class Test
      *
      * @param null|object $data
      *
-     * @return void
+     * @return string
      */
-    public function test(?object $data) :void
+    public function test($data)
     {
 
     }

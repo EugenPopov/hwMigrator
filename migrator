@@ -14,14 +14,13 @@ $factory = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
 
 foreach ($methods as $method) {
 
-    ///////RETURN TYPE HINTS//////
+    ///////RETURN//////
     $matches = [];
 
     $docBlock = $factory->create($method->getDocComment());
     $returns = $docBlock->getTagsByName('return');
 
     $pattern = '/' . $method->getName() . '\(.+\)' . '/';
-    echo PHP_EOL;
     \preg_match($pattern, $classToMigrate, $matches);
     $methodSignature = $matches[0];
     $oldMethodSignature = $methodSignature;
@@ -29,7 +28,7 @@ foreach ($methods as $method) {
     foreach ($returns as $return) {
         $type = (string) $return->getType();
         $types = \explode('|', $type);
-        echo $typesNum = count($types);
+        $typesNum = count($types);
 
         // TODO: handle "mixed" type
 
@@ -39,20 +38,17 @@ foreach ($methods as $method) {
             $type = '?' . ($types[0] === 'null' ? $types[1] : $types[0]);
         }
 
-        echo $methodSignature = $methodSignature.' :'.$type;
+        $methodSignature = $methodSignature.' :'.$type;
     }
 
     $classToMigrate = str_replace($oldMethodSignature, $methodSignature, $classToMigrate);
 
-    //////////////ARGUMENT TYPE///////////
+    //////////////PARAM///////////
 
-    $matches = [];
 
     $docBlock = $factory->create($method->getDocComment());
     $params = $docBlock->getTagsByName('param');
 
-    echo $pattern = '/' . $method->getName() . '\(.+\)' . '/';
-    \preg_match($pattern, $classToMigrate, $matches);
     $methodSignature = $matches[0];
     $oldMethodSignature = $methodSignature;
 
@@ -60,8 +56,7 @@ foreach ($methods as $method) {
         $type = (string) $param->getType();
         $types = \explode('|', $type);
         $paramName = '$' . $param->getVariableName();
-        echo PHP_EOL;
-        echo $typesNum = count($types);
+        $typesNum = count($types);
 
         // TODO: handle "mixed" type
 
